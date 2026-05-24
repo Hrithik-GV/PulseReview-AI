@@ -313,7 +313,7 @@ async def run_autonomous_review(workflow_id: str, repo_name: str, pr_number: int
     planner_result = None
     if model_initialized:
         try:
-            res = await query_gemini(PLANNER_PROMPT.format(diff=diff))
+            res = await query_gemini(PLANNER_PROMPT.replace("{diff}", diff))
             planner_result = json.loads(res)
             msg = f"Plan created: {len(planner_result.get('planned_reviews', []))} files queued."
         except Exception as e:
@@ -337,7 +337,7 @@ async def run_autonomous_review(workflow_id: str, repo_name: str, pr_number: int
     bug_findings = None
     if model_initialized:
         try:
-            res = await query_gemini(BUG_PROMPT.format(diff=diff))
+            res = await query_gemini(BUG_PROMPT.replace("{diff}", diff))
             bug_findings = json.loads(res)
         except Exception as e:
             logger.error(f"Bug Detection agent failed: {e}")
@@ -354,7 +354,7 @@ async def run_autonomous_review(workflow_id: str, repo_name: str, pr_number: int
     security_findings = None
     if model_initialized:
         try:
-            res = await query_gemini(SECURITY_PROMPT.format(diff=diff))
+            res = await query_gemini(SECURITY_PROMPT.replace("{diff}", diff))
             security_findings = json.loads(res)
         except Exception as e:
             logger.error(f"Security agent failed: {e}")
@@ -371,7 +371,7 @@ async def run_autonomous_review(workflow_id: str, repo_name: str, pr_number: int
     perf_findings = None
     if model_initialized:
         try:
-            res = await query_gemini(PERFORMANCE_PROMPT.format(diff=diff))
+            res = await query_gemini(PERFORMANCE_PROMPT.replace("{diff}", diff))
             perf_findings = json.loads(res)
         except Exception as e:
             logger.error(f"Performance agent failed: {e}")
@@ -388,7 +388,7 @@ async def run_autonomous_review(workflow_id: str, repo_name: str, pr_number: int
     quality_findings = None
     if model_initialized:
         try:
-            res = await query_gemini(QUALITY_PROMPT.format(diff=diff))
+            res = await query_gemini(QUALITY_PROMPT.replace("{diff}", diff))
             quality_findings = json.loads(res)
         except Exception as e:
             logger.error(f"Code Quality agent failed: {e}")
@@ -405,7 +405,7 @@ async def run_autonomous_review(workflow_id: str, repo_name: str, pr_number: int
     summary_result = None
     if model_initialized:
         try:
-            res = await query_gemini(SUMMARY_PROMPT.format(findings=json.dumps(all_findings), diff=diff))
+            res = await query_gemini(SUMMARY_PROMPT.replace("{findings}", json.dumps(all_findings)).replace("{diff}", diff))
             summary_result = json.loads(res)
         except Exception as e:
             logger.error(f"Summary agent failed: {e}")

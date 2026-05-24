@@ -1,2 +1,17 @@
 project details/
 backend/.env
+
+# Node
+node_modules/
+dist/
+.DS_Store
+
+# Python
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
