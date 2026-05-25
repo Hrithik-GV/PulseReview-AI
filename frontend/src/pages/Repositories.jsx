@@ -59,7 +59,11 @@ export default function Repositories() {
     if (!triggerRepo) return
     setTriggering(true)
     try {
-      await triggerWorkflow(triggerRepo.name, prNumber, prTitle)
+      let fullRepoName = triggerRepo.name;
+      if (!fullRepoName.includes('/')) {
+        fullRepoName = `${triggerRepo.owner}/${triggerRepo.name}`;
+      }
+      await triggerWorkflow(fullRepoName, prNumber, prTitle)
       setTriggerRepo(null)
       // Redirect to workflows to watch it run live
       navigate('/workflows')
